@@ -1,0 +1,25 @@
+.head {
+    margin-top: 20px;
+    font-size: 2.4rem;
+}
+
+.mainBlock {
+    width: 60%;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: aquamarine;
+}
+
+.setBlock {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+
+.link {
+    font-size: 1.2rem;
+}
+
+.marginLastName {
+    margin-top: 10px;
+}

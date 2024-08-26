@@ -1,17 +1,18 @@
-import { Router } from 'express';
-import db from '../modelDB/index';
+const { Router } = require('express');
+const bcrypt = require('bcrypt');
+const User = require('../model/userModel.js');
 
 const router = Router();
-const User = db.User;
 
-// Создание новой задачи
-router.post('/', async (req, res) => {
+// Создание нового пользователя
+router.post('/add', async (req, res) => {
+    const hashPassword = await bcrypt.hash(req.body.firstName, 10);
     try {
         const user = await User.create({
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
-            password: req.body.password,
+            password: hashPassword,
         });
         res.status(201).json({ user });
     } catch (e) {
