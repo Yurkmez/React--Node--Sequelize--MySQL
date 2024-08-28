@@ -1,31 +1,31 @@
+// https://stackoverflow.com/questions/42173786/react-router-pass-data-when-navigating-programmatically
+// Об location.state. Переход в другой компонент с передачей параметров
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+
 import axios from 'axios';
 
-const AddUser = () => {
+import styleUser from './user_edit.module.css';
+
+const User = () => {
+    const location = useLocation();
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
+        firstName: location.state.firstName,
+        lastName: location.state.lastName,
+        email: location.state.email,
+        id: location.state.id,
     });
 
     async function handleSubmit(event) {
         event.preventDefault();
         try {
-            await axios.post('http://localhost:5000/add', {
+            await axios.put(`http://localhost:5000/edit/${formData.id}`, {
                 firstName: formData.firstName,
                 lastName: formData.lastName,
                 email: formData.email,
-                password: formData.password,
-            });
-            setFormData({
-                firstName: '',
-                lastName: '',
-                email: '',
-                password: '',
+                id: formData.id,
             });
             navigate('/');
         } catch (error) {
@@ -33,19 +33,9 @@ const AddUser = () => {
         }
     }
 
-    // По идее, эти процедуры должны очищать поля ввода, но почемуто они их очищают раньше, чем данные отправляются
-    // https://bobbyhadz.com/blog/javascript-clear-input-field-after-submit
-    // window.onload = function () {
-    // const formListen = document.getElementById('form_addUser');
-    // formListen.addEventListener('submit', () => {
-    //     // clear form after submit
-    //     formListen.reset();
-    // });
-    // };
-
     return (
-        <div>
-            <form onSubmit={handleSubmit} id="form_addUser">
+        <>
+            <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="firstName">First Name:</label>
                     <br />
@@ -103,30 +93,10 @@ const AddUser = () => {
                     <br />
                 </div>
 
-                <div>
-                    <label htmlFor="password">Password:</label>
-                    <br />
-                    <input
-                        type="password"
-                        name="password"
-                        id="pass"
-                        onChange={(e) =>
-                            setFormData({
-                                ...formData,
-                                password: e.target.value,
-                            })
-                        }
-                        value={formData.password}
-                        required
-                        maxLength={15}
-                    />
-                    <br />
-                </div>
-
                 <button type="submit">Sign Up</button>
             </form>
-        </div>
+        </>
     );
 };
 
-export default AddUser;
+export default User;

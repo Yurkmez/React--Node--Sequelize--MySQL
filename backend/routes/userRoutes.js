@@ -22,5 +22,76 @@ router.post('/add', async (req, res) => {
         });
     }
 });
+// Редактирование пользователя
+router.put('/edit/:id', async (req, res) => {
+    try {
+        await User.update(
+            {
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                email: req.body.email,
+            },
+            {
+                where: {
+                    id: +req.params.id,
+                },
+            }
+        );
+        res.status(201).json({});
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({
+            message: 'Server error',
+        });
+    }
+});
+
+// Удаление пользователя
+router.delete('/:id', async (req, res) => {
+    try {
+        await User.destroy({
+            where: {
+                id: +req.params.id,
+            },
+        });
+        res.status(204).json({});
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({
+            message: 'Server error',
+        });
+    }
+});
+
+// Получение списка users
+router.get('/all', async (req, res) => {
+    try {
+        const users = await User.findAll();
+        res.status(200).json(users);
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({
+            message: 'Server error',
+        });
+    }
+});
+
+// ПОлучение выбранного user
+router.get('/:id', async (req, res) => {
+    try {
+        const user = await User.findAll({
+            where: {
+                id: +req.params.id,
+            },
+        });
+
+        res.status(200).send(user);
+    } catch (e) {
+        console.log(e);
+        res.status(500).json({
+            message: 'Server error',
+        });
+    }
+});
 
 module.exports = router;

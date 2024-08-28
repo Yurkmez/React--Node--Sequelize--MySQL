@@ -15,30 +15,49 @@ const Users = () => {
             Axios.get('http://localhost:5000/all')
                 .then((response) => {
                     setUsers(response.data);
-                    console.log(response.data);
                 })
                 .catch((error) => console.log(error));
         }
         fetchData();
     }, []);
 
+    // Переход на стр. user_edit происходит при изменении ~ user,
+    // при нажатии кнопки "Edit User" -> "handleUserEdit" (setUser)
+    // при этом в location (на странице user) есть свойство state
+    // куда мы и передаем данные для отражения на странице
     useEffect(() => {
         if (user) {
-            navigate('user', {
+            navigate('edit', {
                 state: {
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    email: user.email,
+                    firstName: user[0].firstName,
+                    lastName: user[0].lastName,
+                    email: user[0].email,
+                    id: user[0].id,
                 },
             });
         }
     }, [user]);
 
-    const handleUser = async (e, id) => {
+    const handleUserEdit = async (e, id) => {
         e.preventDefault();
-        await Axios.get(`http://localhost:5000//${id}`)
+        await Axios.get(`http://localhost:5000/${id}`)
             .then(function (response) {
                 setUser(response.data);
+            })
+            .catch(function (error) {
+                alert(error);
+            });
+    };
+
+    const handleDeleteUser = async (e, id) => {
+        e.preventDefault();
+        await Axios.delete(`http://localhost:5000/${id}`)
+            .then(async function () {
+                await Axios.get('http://localhost:5000/all')
+                    .then((response) => {
+                        setUsers(response.data);
+                    })
+                    .catch((error) => console.log(error));
             })
             .catch(function (error) {
                 alert(error);
@@ -65,9 +84,15 @@ const Users = () => {
                             </h4>
                             <Link
                                 className={styleUsers.link}
-                                onClick={(e) => handleUser(e, item.id)}
+                                onClick={(e) => handleUserEdit(e, item.id)}
                             >
-                                <strong>Show User</strong>
+                                <strong>Edit</strong>
+                            </Link>
+                            <Link
+                                className={styleUsers.link}
+                                onClick={(e) => handleDeleteUser(e, item.id)}
+                            >
+                                <strong>Delete</strong>
                             </Link>
                         </div>
                     );
