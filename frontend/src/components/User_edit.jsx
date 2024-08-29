@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 import axios from 'axios';
 
-import styleUser from './user_edit.module.css';
+import './user_edit_add.css';
 
 const User = () => {
     const location = useLocation();
@@ -34,68 +34,80 @@ const User = () => {
     }
 
     return (
-        <>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="firstName">First Name:</label>
-                    <br />
-                    <input
-                        type="text"
-                        name="firstName"
-                        id="fname"
-                        onChange={(e) =>
-                            setFormData({
-                                ...formData,
-                                firstName: e.target.value,
-                            })
-                        }
-                        value={formData.firstName}
-                        required
-                        maxLength={20}
-                    />
-                    <br />
-                </div>
-
-                <div>
-                    <label htmlFor="lastName">Last Name:</label>
-                    <br />
-                    <input
-                        type="text"
-                        name="lastName"
-                        id="lname"
-                        onChange={(e) =>
-                            setFormData({
-                                ...formData,
-                                lastName: e.target.value,
-                            })
-                        }
-                        value={formData.lastName}
-                        required
-                        maxLength={20}
-                    />
-                    <br />
-                </div>
-
-                <div>
-                    <label htmlFor="email">Email:</label>
-                    <br />
-                    <input
-                        type="email"
-                        name="email"
-                        id="email"
-                        onChange={(e) =>
-                            setFormData({ ...formData, email: e.target.value })
-                        }
-                        value={formData.email}
-                        required
-                        maxLength={40}
-                    />
-                    <br />
-                </div>
-
-                <button type="submit">Sign Up</button>
-            </form>
-        </>
+        <div className="onCenterMyClass">
+            <div className="row">
+                <h3>Edit user "{formData.firstName}"</h3>
+                <form className="col s9" onSubmit={handleSubmit}>
+                    <div className="row">
+                        <div className="input-field col s6">
+                            <label htmlFor="first_name">First Name:</label>
+                            <br />
+                            <input
+                                type="text"
+                                name="firstName"
+                                id="first_name"
+                                onChange={(e) =>
+                                    setFormData({
+                                        ...formData,
+                                        firstName: e.target.value,
+                                    })
+                                }
+                                value={formData.firstName}
+                                className="validate"
+                                required
+                                maxLength={20}
+                            />
+                        </div>
+                        <div className="input-field col s6">
+                            <label htmlFor="last_name">Last Name</label>
+                            <br />
+                            <input
+                                type="text"
+                                name="lastName"
+                                id="last_name"
+                                onChange={(e) =>
+                                    setFormData({
+                                        ...formData,
+                                        lastName: e.target.value,
+                                    })
+                                }
+                                value={formData.lastName}
+                                className="validate"
+                                required
+                                maxLength={20}
+                            />
+                        </div>
+                        <div className="input-field col s6">
+                            <label htmlFor="email">Email:</label>
+                            <br />
+                            <input
+                                type="email"
+                                name="email"
+                                id="email"
+                                onChange={(e) =>
+                                    setFormData({
+                                        ...formData,
+                                        email: e.target.value,
+                                    })
+                                }
+                                value={formData.email}
+                                className="validate"
+                                required
+                                maxLength={40}
+                            />
+                            <br />
+                        </div>
+                        <button
+                            className="btn btn-primery btnMyClass"
+                            type="submit"
+                            name="action"
+                        >
+                            Update
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     );
 };
 

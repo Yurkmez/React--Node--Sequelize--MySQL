@@ -8,13 +8,18 @@ import styleUsers from './users.module.css';
 const Users = () => {
     const navigate = useNavigate();
     const [users, setUsers] = useState();
+    const [countsUsers, setcountsUsers] = useState();
+
     const [user, setUser] = useState();
+    // console.log(users);
 
     useEffect(() => {
         async function fetchData() {
             Axios.get('http://localhost:5000/all')
                 .then((response) => {
-                    setUsers(response.data);
+                    setUsers(response.data.rows);
+                    setcountsUsers(response.data.count);
+                    console.log(response.data.rows);
                 })
                 .catch((error) => console.log(error));
         }
@@ -64,39 +69,49 @@ const Users = () => {
             });
     };
 
-    if (!users)
+    if (users === undefined || users.length === 0)
         return (
             <>
-                <p>No users </p>
+                <h3>No users </h3>
             </>
         );
     return (
         <>
             <h2 className={styleUsers.head}>List of Users</h2>
             <div className={styleUsers.mainBlock}>
+                <hr />
                 {users.map((item) => {
                     return (
-                        <div className={styleUsers.setBlock} key={item._id}>
-                            <h2>{item.firstName}</h2>
-
-                            <h4 className={styleUsers.marginLastName}>
-                                {item.lastName}
-                            </h4>
-                            <Link
-                                className={styleUsers.link}
-                                onClick={(e) => handleUserEdit(e, item.id)}
-                            >
-                                <strong>Edit</strong>
-                            </Link>
-                            <Link
-                                className={styleUsers.link}
-                                onClick={(e) => handleDeleteUser(e, item.id)}
-                            >
-                                <strong>Delete</strong>
-                            </Link>
+                        <div className={styleUsers.setBlock} key={item.id}>
+                            <div className={styleUsers.setBlock1}>
+                                <p>{item.fullName}</p>
+                                {/* <p>{item.lastName}</p> */}
+                            </div>
+                            <div className={styleUsers.setBlock2}>
+                                <button
+                                    className="btn btn-primery"
+                                    onClick={(e) => handleUserEdit(e, item.id)}
+                                >
+                                    <strong>Edit</strong>
+                                </button>
+                                <button
+                                    className="btn btn-primery"
+                                    // className={styleUsers.link}
+                                    onClick={(e) =>
+                                        handleDeleteUser(e, item.id)
+                                    }
+                                >
+                                    <strong>Delete</strong>
+                                </button>
+                            </div>
                         </div>
                     );
                 })}
+                <hr />
+                <h5 className={styleUsers.counter}>
+                    Total users: {countsUsers}
+                </h5>
+                <hr />
             </div>
         </>
     );

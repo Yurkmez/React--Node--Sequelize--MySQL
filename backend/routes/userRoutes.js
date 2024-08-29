@@ -37,7 +37,7 @@ router.put('/edit/:id', async (req, res) => {
                 },
             }
         );
-        res.status(201).json({});
+        res.status(201).send('User updated');
     } catch (e) {
         console.log(e);
         res.status(500).json({
@@ -64,10 +64,13 @@ router.delete('/:id', async (req, res) => {
 });
 
 // Получение списка users
+// const { count, rows } = await Project.findAndCountAll({
+//   });
+
 router.get('/all', async (req, res) => {
     try {
-        const users = await User.findAll();
-        res.status(200).json(users);
+        const { count, rows } = await User.findAndCountAll();
+        res.status(200).send({ count, rows });
     } catch (e) {
         console.log(e);
         res.status(500).json({
@@ -75,6 +78,17 @@ router.get('/all', async (req, res) => {
         });
     }
 });
+// router.get('/all', async (req, res) => {
+//     try {
+//         const users = await User.findAll();
+//         res.status(200).send(users);
+//     } catch (e) {
+//         console.log(e);
+//         res.status(500).json({
+//             message: 'Server error',
+//         });
+//     }
+// });
 
 // ПОлучение выбранного user
 router.get('/:id', async (req, res) => {
